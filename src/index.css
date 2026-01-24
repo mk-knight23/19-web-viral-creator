@@ -4,10 +4,22 @@
 
 :root {
   --brand-bg: #f8fafc;
+  --brand-primary: #6366f1;
+  color-scheme: light;
 }
 
 .dark {
   --brand-bg: #0f172a;
+  color-scheme: dark;
+}
+
+.light {
+  --brand-bg: #f8fafc;
+  color-scheme: light;
+}
+
+html {
+  background-color: var(--brand-bg);
 }
 
 body {
@@ -16,17 +28,28 @@ body {
   min-height: 100vh;
 }
 
-/* Meme text style */
+.glass {
+  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50;
+}
+
 .meme-text {
   @apply absolute left-1/2 -translate-x-1/2 w-[90%] text-center font-black uppercase tracking-tight break-words pointer-events-none;
   -webkit-text-stroke: 1.5px black;
   text-shadow: 2px 2px 0 #000,
-               -1px -1px 0 #000,  
+               -1px -1px 0 #000,
                 1px -1px 0 #000,
                -1px 1px 0 #000,
                 1px 1px 0 #000;
 }
 
-.glass {
-  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50;
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+
+kbd {
+  @apply px-2 py-1 text-xs font-mono bg-slate-200 dark:bg-slate-700 rounded border border-slate-300 dark:border-slate-600;
 }

@@ -9,13 +9,18 @@ export default {
           bg: '#f8fafc',
           dark: '#0f172a',
           primary: '#6366f1',
-          accent: '#ec4899'
+          accent: '#ec4899',
+          light: {
+            bg: '#f8fafc',
+            primary: '#4f46e5',
+            dark: '#1e293b',
+          }
         }
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Outfit', 'sans-serif']
-      },
+      }
     },
   },
   plugins: [],
