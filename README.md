@@ -1,6 +1,19 @@
-# Web Viral Creator
+# 19 Web Viral Creator
 
 A professional web application for creating, customizing, and sharing memes. Built with React 19, TypeScript, and Tailwind CSS v4.
+
+## 📦 Deployment
+
+### Render (One-Click Deploy)
+This repository includes a `render.yaml` blueprint for automated deployment:
+1. Visit [dashboard.render.com](https://dashboard.render.com)
+2. Click "New +" → "Blueprint"
+3. Connect repository: `mk-knight23/19-web-viral-creator`
+4. Render will auto-detect and apply the blueprint configuration
+
+### Manual Deployment
+- **Build Command**: `npm run build`
+- **Publish Directory**: `dist`
 
 ## Features
 
