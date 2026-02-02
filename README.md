@@ -1,6 +1,6 @@
 # MemeLab - Ultimate Meme Generator
 
-A professional web application for creating, customizing, and sharing memes. Built with React 18, TypeScript, and Tailwind CSS.
+A professional web application for creating, customizing, and sharing memes. Built with React 19, TypeScript, and Tailwind CSS v4.
 
 ## Features
 
@@ -14,12 +14,12 @@ A professional web application for creating, customizing, and sharing memes. Bui
 
 ## Tech Stack
 
-- **React 18** - UI framework
-- **TypeScript** - Robust type safety
-- **Vite** - Lightning-fast build tool
-- **Tailwind CSS** - Modern styling and layout
-- **Zustand** - State management with persistence
-- **Framer Motion** - Smooth UI transitions and animations
+- **React 19.2.3** - Latest UI framework
+- **TypeScript 5.9.3** - Robust type safety
+- **Vite 6.4.1** - Lightning-fast build tool
+- **Tailwind CSS v4** - Modern styling and layout
+- **Zustand 5.0.2** - State management with persistence
+- **Framer Motion 12.29.2** - Smooth UI transitions and animations
 - **html2canvas** - Client-side image generation
 - **Lucide React** - Beautiful, consistent iconography
 
@@ -34,10 +34,10 @@ A professional web application for creating, customizing, and sharing memes. Bui
 
 ```bash
 # Clone the repository
-git clone https://github.com/mk-knight23/36-Meme-Generator-Web.git
+git clone https://github.com/mk-knight23/memelab-meme-generator.git
 
 # Navigate to project
-cd 36-Meme-Generator-Web
+cd memelab-meme-generator
 
 # Install dependencies
 npm install
@@ -59,7 +59,7 @@ npm run preview
 ## Project Structure
 
 ```
-36-Meme-Generator-Web/
+memelab-meme-generator/
 ├── public/
 │   └── favicon.svg      # App icon
 ├── src/
@@ -79,18 +79,12 @@ npm run preview
 └── tailwind.config.js
 ```
 
-## Deployment
-
-This project includes a GitHub Actions workflow for automatic deployment to GitHub Pages.
-
-1. Enable GitHub Pages in repository settings.
-2. Set source to "GitHub Actions".
-3. Push to the `main` branch to trigger deployment.
-
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Live Demo:** [https://mk-knight23.github.io/36-Meme-Generator-Web/](https://mk-knight23.github.io/36-Meme-Generator-Web/)
+**Built by [Kazi Musharraf](https://github.com/mkazi-)*
+Status: 🟢 Active
+Last Updated: 2026-02-02

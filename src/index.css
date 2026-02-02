@@ -1,55 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --brand-bg: #f8fafc;
-  --brand-primary: #6366f1;
-  color-scheme: light;
+@theme {
+  --color-bg-primary: #f8fafc;
+  --color-bg-secondary: #f1f5f9;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-accent: #6366f1;
+
+  --font-display: "Outfit", sans-serif;
 }
 
 .dark {
-  --brand-bg: #0f172a;
-  color-scheme: dark;
-}
-
-.light {
-  --brand-bg: #f8fafc;
-  color-scheme: light;
+  --color-bg-primary: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-accent: #818cf8;
 }
 
 html {
-  background-color: var(--brand-bg);
+  @apply scroll-smooth;
 }
 
 body {
-  @apply bg-brand-bg text-slate-900 dark:text-slate-100 transition-colors duration-300;
-  margin: 0;
-  min-height: 100vh;
+  @apply bg-bg-primary text-text-primary antialiased;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-.glass {
-  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50;
+@utility glass-panel {
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.meme-text {
-  @apply absolute left-1/2 -translate-x-1/2 w-[90%] text-center font-black uppercase tracking-tight break-words pointer-events-none;
-  -webkit-text-stroke: 1.5px black;
-  text-shadow: 2px 2px 0 #000,
-               -1px -1px 0 #000,
-                1px -1px 0 #000,
-               -1px 1px 0 #000,
-                1px 1px 0 #000;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
-}
-
-kbd {
-  @apply px-2 py-1 text-xs font-mono bg-slate-200 dark:bg-slate-700 rounded border border-slate-300 dark:border-slate-600;
+.dark @utility glass-panel {
+  background-color: rgba(15, 23, 42, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
 }
