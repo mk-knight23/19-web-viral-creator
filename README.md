@@ -1,4 +1,4 @@
-# MemeLab - Ultimate Meme Generator
+# Web Viral Creator
 
 A professional web application for creating, customizing, and sharing memes. Built with React 19, TypeScript, and Tailwind CSS v4.
 
@@ -34,10 +34,10 @@ A professional web application for creating, customizing, and sharing memes. Bui
 
 ```bash
 # Clone the repository
-git clone https://github.com/mk-knight23/memelab-meme-generator.git
+git clone https://github.com/mk-knight23/19-web-viral-creator.git
 
 # Navigate to project
-cd memelab-meme-generator
+cd 19-web-viral-creator
 
 # Install dependencies
 npm install
@@ -59,7 +59,7 @@ npm run preview
 ## Project Structure
 
 ```
-memelab-meme-generator/
+19-web-viral-creator/
 ├── public/
 │   └── favicon.svg      # App icon
 ├── src/
