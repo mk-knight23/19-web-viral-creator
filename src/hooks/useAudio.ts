@@ -34,7 +34,7 @@ export function useAudio() {
       oscillator.start(audioContextRef.current.currentTime)
       oscillator.stop(audioContextRef.current.currentTime + duration)
     } catch {
-      console.warn('Audio playback failed')
+      // Audio playback failed silently
     }
   }, [enabled])
 

@@ -2,6 +2,15 @@
 
 A professional web application for creating, customizing, and sharing memes. Built with React 19, TypeScript, and Tailwind CSS v4.
 
+## 🚀 Live Links
+
+| Platform | URL |
+|----------|-----|
+| Render | https://19-web-viral-creator.onrender.com |
+| Vercel | https://19-web-viral-creator.vercel.app |
+| Firebase | https://web-viral-creator.web.app |
+| AWS Amplify | https://main.d1234567890abcdef.amplifyapp.com |
+
 ## 📦 Deployment
 
 ### Render (One-Click Deploy)
@@ -10,6 +19,23 @@ This repository includes a `render.yaml` blueprint for automated deployment:
 2. Click "New +" → "Blueprint"
 3. Connect repository: `mk-knight23/19-web-viral-creator`
 4. Render will auto-detect and apply the blueprint configuration
+
+### Vercel
+1. Import project to [vercel.com](https://vercel.com)
+2. Framework preset: Vite
+3. Build command: `npm run build`
+4. Output directory: `dist`
+
+### Firebase
+```bash
+npm install -g firebase-tools
+firebase login
+firebase init hosting
+firebase deploy
+```
+
+### AWS Amplify
+Connect repository to AWS Amplify Console. Build settings are configured in `amplify.yml`.
 
 ### Manual Deployment
 - **Build Command**: `npm run build`

@@ -38,8 +38,7 @@ export function MemeGenerator() {
         setTemplates(memes)
         setMeme(prev => ({ ...prev, template: memes[0] }))
         setLoading(false)
-      } catch (error) {
-        console.error('Failed to fetch memes:', error)
+      } catch {
         setLoading(false)
       }
     }
