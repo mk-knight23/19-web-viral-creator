@@ -12,10 +12,14 @@ import {
 import html2canvas from 'html2canvas'
 import { saveAs } from 'file-saver'
 import { useMemeStore } from '@/stores/memeStore'
+import { useStatsStore } from '@/stores/stats'
+import { useKeyboardControls } from '@/hooks/useKeyboardControls'
 import type { MemeState } from '@/types/meme'
 
 export function MemeGenerator() {
   const { templates, setTemplates, addFavorite, favorites, removeFavorite } = useMemeStore()
+  const stats = useStatsStore()
+  const { lastAction } = useKeyboardControls()
   const [meme, setMeme] = useState<MemeState>({
     topText: '',
     bottomText: '',
@@ -28,6 +32,26 @@ export function MemeGenerator() {
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
   const memeRef = useRef<HTMLDivElement>(null)
+
+  // Track session time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      stats.addTimeSpent(1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [stats])
+
+  // Keyboard shortcuts integration
+  useEffect(() => {
+    const action = lastAction.current
+    if (action === 'download') {
+      handleDownload()
+    } else if (action === 'random') {
+      handleRandom()
+    } else if (action === 'save') {
+      handleFavorite()
+    }
+  }, [lastAction.current])
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -48,13 +72,17 @@ export function MemeGenerator() {
   const handleRandom = () => {
     const random = templates[Math.floor(Math.random() * templates.length)]
     setMeme(prev => ({ ...prev, template: random }))
+    stats.recordMemeCreated()
   }
 
   const handleDownload = async () => {
     if (!memeRef.current) return
     const canvas = await html2canvas(memeRef.current, { useCORS: true })
     canvas.toBlob((blob) => {
-      if (blob) saveAs(blob, `meme-${Date.now()}.png`)
+      if (blob) {
+        saveAs(blob, `meme-${Date.now()}.png`)
+        stats.recordDownload()
+      }
     })
   }
 
@@ -67,6 +95,7 @@ export function MemeGenerator() {
       bottomText: meme.bottomText,
       date: new Date().toISOString()
     })
+    stats.addFavorite()
   }
 
   const filteredTemplates = templates.filter(t => 
