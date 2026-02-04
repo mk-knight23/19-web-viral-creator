@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "meme-creator-47cf1",
     "public": "dist",
     "ignore": [
       "firebase.json",
