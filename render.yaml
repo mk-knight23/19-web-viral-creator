@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: 19-web-viral-creator
-    env: static
-    buildCommand: npm run build
-    publishPath: dist
-    envVars:
-      - key: NODE_VERSION
-        value: 22
