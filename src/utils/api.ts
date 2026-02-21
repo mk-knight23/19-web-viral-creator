@@ -15,6 +15,7 @@ export interface ApiResponse<T> {
   success: boolean
   data: T
   cached?: boolean
+  sources?: string[]
   error?: string
 }
 
@@ -50,4 +51,14 @@ export async function getCategoryMemes(category: string, page = 1): Promise<Sear
 
 export async function getCategories(): Promise<{ id: string; name: string }[]> {
   return fetchApi<{ id: string; name: string }>('/categories')
+}
+
+export async function getActiveSources(): Promise<string[]> {
+  try {
+    const res = await fetch(`${BASE}/sources`)
+    const json: ApiResponse<string[]> = await res.json()
+    return json.success ? json.data : []
+  } catch {
+    return []
+  }
 }

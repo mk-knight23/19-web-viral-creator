@@ -34,7 +34,7 @@ import { saveAs } from 'file-saver'
 import { useMemeStore } from '@/stores/memeStore'
 import { useStatsStore } from '@/stores/stats'
 import { useToastStore } from '@/stores/toastStore'
-import { searchMemes, getTrendingMemes, getCategoryMemes, getTemplates } from '@/utils/api'
+import { searchMemes, getTrendingMemes, getCategoryMemes, getTemplates, getActiveSources } from '@/utils/api'
 import type { MemeState, MemeTemplate } from '@/types/meme'
 import type { SearchMeme } from '@/utils/api'
 
@@ -46,6 +46,18 @@ const FONT_OPTIONS = [
   { value: "'Courier New', monospace", label: 'Courier' },
   { value: "'Trebuchet MS', sans-serif", label: 'Trebuchet' },
 ]
+
+const SOURCE_COLORS: Record<string, string> = {
+  serper: '#2563eb',
+  tavily: '#9333ea',
+  brave: '#f97316',
+  serpapi: '#16a34a',
+  searchapi: '#0891b2',
+  exa: '#6366f1',
+  scrapingdog: '#ca8a04',
+  apify: '#e11d48',
+  imgflip: '#4b5563',
+}
 
 const CATEGORIES = [
   { id: 'templates', name: 'Templates', icon: ImageIcon },
@@ -93,6 +105,7 @@ export function MemeGenerator() {
   const [showFavorites, setShowFavorites] = useState(true)
   const [activeTab, setActiveTab] = useState<'customize' | 'browse'>('customize')
   const [showShareMenu, setShowShareMenu] = useState(false)
+  const [activeSources, setActiveSources] = useState<string[]>([])
 
   const historyRef = useRef<MemeState[]>([])
   const historyIndexRef = useRef(-1)
@@ -144,6 +157,7 @@ export function MemeGenerator() {
       }
     }
     load()
+    getActiveSources().then(setActiveSources).catch(() => {})
   }, [setTemplates])
 
   const commitToHistory = useCallback((newMeme: MemeState) => {
@@ -528,6 +542,15 @@ export function MemeGenerator() {
               <input type="text" value={searchTerm} onChange={(e) => handleSearch(e.target.value)} placeholder="Search memes across the web..." className="w-full bg-surface-secondary border border-border rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary outline-none" />
             </div>
 
+            {activeSources.length > 0 && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] text-text-muted font-medium uppercase tracking-wide">Powered by {activeSources.length} sources:</span>
+                {activeSources.map((src) => (
+                  <span key={src} className="text-white text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ backgroundColor: SOURCE_COLORS[src] || '#7c3aed' }}>{src}</span>
+                ))}
+              </div>
+            )}
+
             <div className="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar">
               {CATEGORIES.map((cat) => {
                 const Icon = cat.icon
@@ -576,8 +599,8 @@ export function MemeGenerator() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-1.5">
                       <span className="text-white text-[10px] font-semibold leading-tight line-clamp-2">{m.name}</span>
                     </div>
-                    {'source' in m && m.source !== 'imgflip' && (
-                      <span className="absolute top-1 right-1 bg-brand-primary/90 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-md uppercase">{m.source}</span>
+                    {'source' in m && (
+                      <span className="absolute top-1 right-1 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-md uppercase" style={{ backgroundColor: SOURCE_COLORS[m.source as string] || '#7c3aed' }}>{m.source as string}</span>
                     )}
                   </button>
                 ))}

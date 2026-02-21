@@ -42,7 +42,9 @@ localPort = 5001
 externalPort = 3000
 
 [deployment]
-deploymentTarget = "autoscale"
+deploymentTarget = "static"
 build = ["npm", "run", "build"]
 publicDir = "dist"
-run = ["bash", "-c", "node server/index.js & npx serve dist -l 5000 -s"]
+
+[objectStorage]
+defaultBucketID = "replit-objstore-aea1fda9-0592-48f8-9429-4bd9d41e8ade"

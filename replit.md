@@ -41,17 +41,24 @@ A professional meme generator with multi-source meme search powered by Serper an
 └── package.json              # Scripts: dev runs both frontend + backend
 ```
 
-## API Keys (stored as secrets)
-- SERPER_API_KEY - Google image search for memes
-- TAVILY_API_KEY - AI-powered meme search
-- APIFY_API_KEY, BRAVE_SEARCH_API_KEY, EXA_API_KEY, SCRAPINGDOG_API_KEY, SEARCHAPI_API_KEY, SERPAPI_API_KEY - Available for future use
+## API Keys (stored as secrets) - All 8 actively used
+- SERPER_API_KEY - Google image search (primary source)
+- BRAVE_SEARCH_API_KEY - Brave image search (primary source)
+- SERPAPI_API_KEY - SerpAPI Google Images (primary source)
+- TAVILY_API_KEY - AI-powered meme search (secondary source)
+- SEARCHAPI_API_KEY - SearchAPI Google Images (secondary source)
+- SCRAPINGDOG_API_KEY - ScrapingDog image search (secondary source)
+- EXA_API_KEY - Exa AI semantic search (tertiary source)
+- APIFY_API_KEY - Apify web scraper (tertiary/fallback source)
 
 ## Meme Categories
 Trending, Funny, Indian, American, Movies, Series, Politics, Dark Humor, Animals, Sports, Gaming, AI Memes, Classic, Reaction
 
 ## Features
-- Multi-source meme search (Serper + Tavily + Imgflip)
+- Multi-source meme search (8 APIs: Serper, Brave, SerpAPI, Tavily, SearchAPI, ScrapingDog, Exa, Apify + Imgflip)
+- Smart search with primary/secondary/tertiary source tiering and fallbacks
 - 15 meme categories with web search
+- Color-coded source badges on search results
 - Text styling (font family, stroke, shadow, color, position)
 - Image upload, undo/redo, copy to clipboard
 - Social sharing (Twitter, Facebook, Reddit, WhatsApp)
@@ -69,3 +76,4 @@ Trending, Funny, Indian, American, Movies, Series, Politics, Dark Humor, Animals
 
 ## Recent Changes
 - 2026-02-21: Added Express backend with Serper/Tavily search APIs, 15 meme categories, text styling (fonts, stroke, shadow), social sharing, copy to clipboard, undo/redo
+- 2026-02-21: Integrated all 8 search APIs (Serper, Brave, SerpAPI, Tavily, SearchAPI, ScrapingDog, Exa, Apify) with tiered search strategy and color-coded source badges
