@@ -5,7 +5,6 @@ import { useStatsStore } from '@/stores/stats'
 import { useAudio } from '@/hooks/useAudio'
 import { KEYBOARD_SHORTCUTS } from '@/utils/constants'
 import {
-  Settings,
   Volume2,
   Moon,
   Sun,
@@ -13,7 +12,8 @@ import {
   RotateCcw,
   X,
   Keyboard,
-  Image,
+  BarChart3,
+  Settings,
 } from 'lucide-react'
 
 export function SettingsPanel() {
@@ -40,7 +40,9 @@ export function SettingsPanel() {
     } else {
       document.body.style.overflow = ''
     }
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [settings.showHelp])
 
   const close = () => {
@@ -55,27 +57,30 @@ export function SettingsPanel() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
           onClick={close}
           role="dialog"
           aria-modal="true"
           aria-labelledby="settings-title"
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            className="glass w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="card-elevated w-full max-w-lg max-h-[85vh] overflow-y-auto custom-scrollbar"
             onClick={(e) => e.stopPropagation()}
           >
-            <header className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
-              <div className="flex items-center space-x-3">
-                <Settings className="text-brand-primary" size={24} />
-                <h2 id="settings-title" className="text-xl font-bold">Settings</h2>
+            <header className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-surface-elevated z-10 rounded-t-[1.25rem]">
+              <div className="flex items-center gap-3">
+                <div className="bg-brand-primary/10 p-2 rounded-lg">
+                  <Settings className="text-brand-primary w-5 h-5" />
+                </div>
+                <h2 id="settings-title" className="text-lg font-display font-bold">Settings</h2>
               </div>
               <button
                 onClick={close}
-                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+                className="p-2 text-text-muted hover:text-text-primary transition-colors rounded-lg hover:bg-surface-secondary cursor-pointer"
                 aria-label="Close settings"
               >
                 <X size={20} />
@@ -83,55 +88,59 @@ export function SettingsPanel() {
             </header>
 
             <div className="p-6 space-y-8">
-              <section aria-labelledby="audio-section">
-                <h3 className="flex items-center space-x-2 text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-                  <Volume2 size={16} />
-                  <span>Audio</span>
+              <section>
+                <h3 className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-4">
+                  <Volume2 size={14} /> Audio
                 </h3>
-                <div className="flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                  <span className="font-medium">Sound Effects</span>
+                <div className="flex items-center justify-between p-4 bg-surface-secondary rounded-xl">
+                  <span className="font-medium text-sm">Sound Effects</span>
                   <button
-                    onClick={() => { playClick(); settings.toggleSound() }}
-                    className={`relative w-14 h-7 rounded-full transition-colors ${
-                      settings.soundEnabled ? 'bg-brand-primary' : 'bg-slate-600'
+                    onClick={() => {
+                      playClick()
+                      settings.toggleSound()
+                    }}
+                    className={`relative w-12 h-6 rounded-full transition-colors cursor-pointer ${
+                      settings.soundEnabled ? 'bg-brand-primary' : 'bg-border'
                     }`}
                     role="switch"
                     aria-checked={settings.soundEnabled}
                   >
                     <span
-                      className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                        settings.soundEnabled ? 'translate-x-7' : 'translate-x-0'
+                      className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${
+                        settings.soundEnabled ? 'translate-x-6' : 'translate-x-0'
                       }`}
                     />
                   </button>
                 </div>
               </section>
 
-              <section aria-labelledby="theme-section">
-                <h3 className="flex items-center space-x-2 text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-                  <Sun size={16} />
-                  <span>Theme</span>
+              <section>
+                <h3 className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-4">
+                  <Sun size={14} /> Theme
                 </h3>
                 <div className="grid grid-cols-3 gap-3">
                   {themeOptions.map((option) => (
                     <button
                       key={option.value}
-                      onClick={() => { playClick(); settings.setTheme(option.value) }}
-                      className={`flex flex-col items-center p-4 rounded-xl transition-all border-2 ${
+                      onClick={() => {
+                        playClick()
+                        settings.setTheme(option.value)
+                      }}
+                      className={`flex flex-col items-center p-4 rounded-xl transition-all border-2 cursor-pointer ${
                         settings.theme === option.value
                           ? 'border-brand-primary bg-brand-primary/10'
-                          : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                          : 'border-border hover:border-border-hover'
                       }`}
                     >
                       <option.icon
                         size={20}
                         className={`mb-2 ${
-                          settings.theme === option.value ? 'text-brand-primary' : 'text-slate-400'
+                          settings.theme === option.value ? 'text-brand-primary' : 'text-text-muted'
                         }`}
                       />
                       <span
                         className={`text-sm font-medium ${
-                          settings.theme === option.value ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'
+                          settings.theme === option.value ? 'text-text-primary' : 'text-text-muted'
                         }`}
                       >
                         {option.label}
@@ -141,51 +150,46 @@ export function SettingsPanel() {
                 </div>
               </section>
 
-              <section aria-labelledby="stats-section">
-                <h3 className="flex items-center space-x-2 text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-                  <Image size={16} />
-                  <span>Statistics</span>
+              <section>
+                <h3 className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-4">
+                  <BarChart3 size={14} /> Statistics
                 </h3>
-                <div className="grid grid-cols-2 gap-4 p-4 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">{stats.totalMemesCreated}</div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider">Memes Created</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-brand-primary">{stats.totalDownloads}</div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider">Downloads</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-brand-accent">{stats.totalFavorites}</div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider">Favorites</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">{formatTime(stats.totalTimeSpent)}</div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider">Time Spent</div>
-                  </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { value: stats.totalMemesCreated, label: 'Memes Created', color: 'text-text-primary' },
+                    { value: stats.totalDownloads, label: 'Downloads', color: 'text-brand-primary' },
+                    { value: stats.totalFavorites, label: 'Favorites', color: 'text-pink-500' },
+                    { value: formatTime(stats.totalTimeSpent), label: 'Time Spent', color: 'text-brand-accent' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="bg-surface-secondary rounded-xl p-4 text-center">
+                      <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
+                      <div className="text-[10px] text-text-muted uppercase tracking-wider mt-1 font-semibold">{stat.label}</div>
+                    </div>
+                  ))}
                 </div>
                 <button
-                  onClick={() => { playClick(); stats.resetStats() }}
-                  className="mt-4 w-full flex items-center justify-center space-x-2 p-3 text-red-500 hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors"
+                  onClick={() => {
+                    playClick()
+                    stats.resetStats()
+                  }}
+                  className="mt-3 w-full flex items-center justify-center gap-2 p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors text-sm font-medium cursor-pointer"
                 >
-                  <RotateCcw size={16} />
-                  <span className="text-sm font-medium">Reset Statistics</span>
+                  <RotateCcw size={14} /> Reset Statistics
                 </button>
               </section>
 
-              <section aria-labelledby="help-section">
-                <h3 className="flex items-center space-x-2 text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-                  <Keyboard size={16} />
-                  <span>Keyboard Shortcuts</span>
+              <section>
+                <h3 className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-4">
+                  <Keyboard size={14} /> Keyboard Shortcuts
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {KEYBOARD_SHORTCUTS.map((shortcut) => (
                     <div
                       key={shortcut.action}
-                      className="flex items-center justify-between p-3 bg-slate-100 dark:bg-slate-800 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-surface-secondary rounded-lg"
                     >
-                      <span className="text-sm text-slate-600 dark:text-slate-400">{shortcut.action}</span>
-                      <kbd className="px-3 py-1 text-xs font-mono bg-slate-200 dark:bg-slate-700 rounded">
+                      <span className="text-sm text-text-secondary">{shortcut.action}</span>
+                      <kbd className="px-2.5 py-1 text-xs font-mono bg-surface-elevated border border-border rounded-md text-text-muted">
                         {shortcut.key}
                       </kbd>
                     </div>
@@ -194,8 +198,8 @@ export function SettingsPanel() {
               </section>
             </div>
 
-            <footer className="p-6 border-t border-slate-200 dark:border-slate-800 text-center">
-              <p className="text-xs text-slate-500">MemeLab v1.0.0 - Built with React + Vite</p>
+            <footer className="p-5 border-t border-border text-center">
+              <p className="text-xs text-text-muted">MemeLab v2.0 — Built with React + Vite</p>
             </footer>
           </motion.div>
         </motion.div>

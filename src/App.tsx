@@ -5,69 +5,83 @@ import {
   Zap,
   Moon,
   Sun,
-  Github,
-  HelpCircle,
+  Settings,
+  Sparkles,
+  Download,
+  Heart,
+  Image,
 } from 'lucide-react'
 import { MemeGenerator } from './components/MemeGenerator'
 import { SettingsPanel } from './components/SettingsPanel'
+import { ToastContainer } from './components/Toast'
+import { useStatsStore } from '@/stores/stats'
 
 export default function App() {
   const { isDarkMode, toggleDarkMode, toggleHelp, applyTheme } = useSettingsStore()
+  const stats = useStatsStore()
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`} role="application" aria-label="MemeLab Meme Generator">
       <SettingsPanel />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <header className="flex justify-between items-center mb-12" role="banner">
+      <ToastContainer />
+
+      <nav className="sticky top-0 z-40 glass mx-0 border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-brand-primary p-2.5 rounded-2xl shadow-lg shadow-brand-primary/30" aria-hidden="true">
-              <Smile className="text-white w-7 h-7" />
+            <div className="bg-brand-primary p-2 rounded-xl shadow-lg shadow-brand-primary/20">
+              <Smile className="text-white w-5 h-5" />
             </div>
-            <h1 className="text-2xl font-display font-bold tracking-tight">
+            <h1 className="text-xl font-display font-bold tracking-tight">
               Meme<span className="text-brand-primary">Lab</span>
             </h1>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => { toggleHelp() }}
-              className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-brand-primary transition-all"
-              aria-label="Open help panel"
-            >
-              <HelpCircle size={20} />
-            </button>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-4 mr-4 text-xs font-semibold text-text-muted">
+              <span className="flex items-center gap-1.5">
+                <Image className="w-3.5 h-3.5" /> {stats.totalMemesCreated}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Download className="w-3.5 h-3.5" /> {stats.totalDownloads}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Heart className="w-3.5 h-3.5" /> {stats.totalFavorites}
+              </span>
+            </div>
+
             <button
               onClick={() => { toggleDarkMode(); applyTheme() }}
-              className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-brand-primary transition-all"
+              className="p-2.5 rounded-xl bg-surface-secondary border border-border text-text-secondary hover:text-brand-primary hover:border-brand-primary/30 transition-all cursor-pointer"
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <a
-              href="https://github.com/mk-knight23/36-Meme-Generator-Web"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-brand-primary transition-all"
-              aria-label="View source code on GitHub"
+            <button
+              onClick={() => { toggleHelp() }}
+              className="p-2.5 rounded-xl bg-surface-secondary border border-border text-text-secondary hover:text-brand-primary hover:border-brand-primary/30 transition-all cursor-pointer"
+              aria-label="Open settings"
             >
-              <Github size={20} />
-            </a>
+              <Settings size={18} />
+            </button>
           </div>
-        </header>
+        </div>
+      </nav>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="mb-12 text-center max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-widest mb-4">
-              <Zap className="w-3 h-3 fill-current" aria-hidden="true" /> Professional Meme Maker
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-widest mb-5">
+              <Zap className="w-3.5 h-3.5 fill-current" /> Professional Meme Maker
             </span>
-            <h2 className="text-4xl md:text-5xl font-display font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-brand-primary to-brand-accent dark:from-white dark:via-brand-primary dark:to-brand-accent">
+            <h2 className="text-4xl md:text-5xl font-display font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-brand-primary via-brand-accent to-brand-glow">
               Create Memes that Go Viral
             </h2>
-            <p className="text-slate-500 dark:text-slate-400">
-              The ultimate workspace for digital creators. Customize thousands of templates or upload your own.
+            <p className="text-text-secondary text-lg leading-relaxed">
+              The ultimate workspace for digital creators. Customize templates, upload your own images, and share instantly.
             </p>
           </motion.div>
         </div>
@@ -76,19 +90,34 @@ export default function App() {
           <MemeGenerator />
         </main>
 
-        <footer className="mt-24 py-12 border-t border-slate-200 dark:border-slate-800" role="contentinfo">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2 text-slate-500">
-              <Smile size={20} />
-              <span className="font-display font-bold">MemeLab v1.0.0</span>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+        >
+          {[
+            { icon: Sparkles, label: 'AI-Powered', desc: 'Smart templates' },
+            { icon: Download, label: 'HD Export', desc: 'High quality PNG' },
+            { icon: Heart, label: 'Favorites', desc: 'Save your best' },
+            { icon: Zap, label: 'Instant', desc: 'No signup needed' },
+          ].map((feature) => (
+            <div key={feature.label} className="card-elevated p-5 text-center group cursor-default">
+              <feature.icon className="w-6 h-6 mx-auto mb-3 text-brand-primary group-hover:scale-110 transition-transform" />
+              <div className="font-display font-bold text-sm mb-1">{feature.label}</div>
+              <div className="text-text-muted text-xs">{feature.desc}</div>
             </div>
-            <div className="flex items-center gap-8 text-sm text-slate-400 font-medium">
-              <a href="#" className="hover:text-brand-primary transition-colors">Privacy</a>
-              <a href="#" className="hover:text-brand-primary transition-colors">API</a>
-              <a href="#" className="hover:text-brand-primary transition-colors">Templates</a>
+          ))}
+        </motion.div>
+
+        <footer className="mt-20 py-10 border-t border-border" role="contentinfo">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-2 text-text-muted">
+              <Smile size={18} />
+              <span className="font-display font-bold text-sm">MemeLab v2.0</span>
             </div>
-            <p className="text-slate-400 text-sm">
-              &copy; 2026 MK-STUDIOS
+            <p className="text-text-muted text-xs">
+              Built with React + Vite + Tailwind
             </p>
           </div>
         </footer>
