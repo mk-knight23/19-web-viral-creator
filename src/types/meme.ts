@@ -4,7 +4,24 @@ export interface MemeTemplate {
   url: string
   width: number
   height: number
-  box_count: number
+  box_count?: number
+  source?: string
+  thumbnail?: string
+  sourceUrl?: string
+}
+
+export interface TextBox {
+  id: string
+  text: string
+  x: number
+  y: number
+  fontSize: number
+  fontFamily: string
+  color: string
+  strokeColor: string
+  strokeWidth: number
+  shadowEnabled: boolean
+  rotation: number
 }
 
 export interface MemeState {
@@ -15,6 +32,10 @@ export interface MemeState {
   topOffset: number
   bottomOffset: number
   template: MemeTemplate | null
+  fontFamily: string
+  strokeColor: string
+  strokeWidth: number
+  shadowEnabled: boolean
 }
 
 export interface FavoriteMeme {

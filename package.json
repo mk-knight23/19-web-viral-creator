@@ -4,14 +4,19 @@
   "version": "2.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"node server/index.js\"",
+    "dev:frontend": "vite",
+    "dev:backend": "node server/index.js",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@types/node": "^25.3.0",
     "clsx": "^2.1.1",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.6",
     "eslint-plugin-react": "^7.37.5",
+    "express": "^5.2.1",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.29.2",
     "html2canvas": "^1.4.1",
