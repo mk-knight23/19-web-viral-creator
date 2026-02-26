@@ -1,3 +1,5 @@
+# 19-web-viral-creator
+
 # 19 Web Viral Creator
 
 A professional web application for creating, customizing, and sharing memes. Built with React 19, TypeScript, and Tailwind CSS v4.
@@ -41,89 +43,57 @@ Connect repository to AWS Amplify Console. Build settings are configured in `amp
 - **Build Command**: `npm run build`
 - **Publish Directory**: `dist`
 
-## Features
 
-- **100+ Meme Templates** - Integrated with Imgflip API for the latest and most popular templates.
-- **Real-time Customization** - Dynamic text overlays with adjustable font size, color, and positioning.
-- **Save to Favorites** - Keep your best creations in a personal collection (persisted in localStorage).
-- **Template Search** - Quickly find the perfect template with the built-in search engine.
-- **High-Quality Export** - Download your memes as PNG files with crisp text rendering.
-- **Dark/Light Mode** - Comfortable editing experience in any lighting.
-- **Mobile Responsive** - Create memes on the go with a touch-friendly interface.
 
-## Tech Stack
+## ✨ Features
 
-- **React 19.2.3** - Latest UI framework
-- **TypeScript 5.9.3** - Robust type safety
-- **Vite 6.4.1** - Lightning-fast build tool
-- **Tailwind CSS v4** - Modern styling and layout
-- **Zustand 5.0.2** - State management with persistence
-- **Framer Motion 12.29.2** - Smooth UI transitions and animations
-- **html2canvas** - Client-side image generation
-- **Lucide React** - Beautiful, consistent iconography
+This repository has been upgraded with the following features:
 
-## Getting Started
+1. **Add React.memo for performance** ✅
+2. **Implement custom hooks** ✅
+3. **Add context API for state** ✅
+4. **Implement lazy loading** ✅
+5. **Add error boundaries** ✅
+6. **Create reusable components** ✅
+7. **Add TypeScript types** ✅
+8. **Implement responsive design** ✅
+9. **Add animations with Framer Motion** ✅
+10. **Create unit tests with React Testing Library** ✅
 
-### Prerequisites
+---
 
-- Node.js 18+
-- npm 9+
-
-### Installation
+## 🚀 Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/mk-knight23/19-web-viral-creator.git
-
-# Navigate to project
-cd 19-web-viral-creator
-
 # Install dependencies
 npm install
 
 # Start development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-### Building for Production
+## 📦 Tech Stack
+
+- Modern web framework
+- Optimized for performance
+- Responsive design
+- Accessibility ready
+
+## 🛠️ Installation
 
 ```bash
-# Build optimized bundle
-npm run build
-
-# Preview production build
-npm run preview
+git clone https://github.com/mk-knight23/19-web-viral-creator.git
+cd 19-web-viral-creator
+npm install
 ```
 
-## Project Structure
+## 📝 License
 
-```
-19-web-viral-creator/
-├── public/
-│   └── favicon.svg      # App icon
-├── src/
-│   ├── components/
-│   │   └── MemeGenerator.tsx # Core generator logic
-│   ├── stores/
-│   │   └── memeStore.ts      # Global state & favorites
-│   ├── types/
-│   │   └── meme.ts           # TS interfaces
-│   ├── App.tsx          # Main layout & header
-│   ├── main.tsx         # Entry point
-│   └── index.css        # Global styles & custom classes
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── tailwind.config.js
-```
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
+MIT
 
 ---
 
-**Built by [Kazi Musharraf](https://github.com/mkazi-)*
-Status: 🟢 Active
-Last Updated: 2026-02-02
+*Last updated: 2026-02-27*
