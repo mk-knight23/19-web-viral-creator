@@ -1,9 +1,11 @@
 # MemeLab - Ultimate Meme Generator
 
 ## Overview
+
 A professional meme generator with multi-source meme search powered by Serper and Tavily APIs. Users can browse trending memes across 15+ categories (Indian, American, Movies, Dark Humor, Gaming, etc.), customize text with advanced styling, and export/share memes.
 
 ## Project Architecture
+
 - **Frontend**: React 19 + TypeScript + Vite 6
 - **Backend**: Express.js API proxy server (port 3001)
 - **Styling**: Tailwind CSS 4 + CSS custom properties design system
@@ -13,6 +15,7 @@ A professional meme generator with multi-source meme search powered by Serper an
 - **Search APIs**: Serper (Google Images), Tavily (AI search), Imgflip (templates)
 
 ## Project Structure
+
 ```
 ├── server/
 │   └── index.js              # Express API server with search proxy, caching
@@ -42,6 +45,7 @@ A professional meme generator with multi-source meme search powered by Serper an
 ```
 
 ## API Keys (stored as secrets) - All 8 actively used
+
 - SERPER_API_KEY - Google image search (primary source)
 - BRAVE_SEARCH_API_KEY - Brave image search (primary source)
 - SERPAPI_API_KEY - SerpAPI Google Images (primary source)
@@ -52,9 +56,11 @@ A professional meme generator with multi-source meme search powered by Serper an
 - APIFY_API_KEY - Apify web scraper (tertiary/fallback source)
 
 ## Meme Categories
+
 Trending, Funny, Indian, American, Movies, Series, Politics, Dark Humor, Animals, Sports, Gaming, AI Memes, Classic, Reaction
 
 ## Features
+
 - Multi-source meme search (8 APIs: Serper, Brave, SerpAPI, Tavily, SearchAPI, ScrapingDog, Exa, Apify + Imgflip)
 - Smart search with primary/secondary/tertiary source tiering and fallbacks
 - 15 meme categories with web search
@@ -66,14 +72,17 @@ Trending, Funny, Indian, American, Movies, Series, Politics, Dark Humor, Animals
 - Dark/light mode, sound effects, usage stats
 
 ## Development
+
 - `npm run dev` - Runs Vite (port 5000) + Express (port 3001) concurrently
-- Vite proxies /api/* requests to Express backend
+- Vite proxies /api/\* requests to Express backend
 
 ## Deployment
+
 - Autoscale deployment
 - Build: `npm run build`
 - Run: Express server + serve dist on port 5000
 
 ## Recent Changes
+
 - 2026-02-21: Added Express backend with Serper/Tavily search APIs, 15 meme categories, text styling (fonts, stroke, shadow), social sharing, copy to clipboard, undo/redo
 - 2026-02-21: Integrated all 8 search APIs (Serper, Brave, SerpAPI, Tavily, SearchAPI, ScrapingDog, Exa, Apify) with tiered search strategy and color-coded source badges

@@ -1,33 +1,35 @@
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import type { MemeTemplate, FavoriteMeme } from '@/types/meme'
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import type { MemeTemplate, FavoriteMeme } from '@/types/meme';
 
 interface MemeStore {
-  templates: MemeTemplate[]
-  favorites: FavoriteMeme[]
+  templates: MemeTemplate[];
+  favorites: FavoriteMeme[];
 
-  setTemplates: (templates: MemeTemplate[]) => void
-  addFavorite: (favorite: FavoriteMeme) => void
-  removeFavorite: (id: string) => void
+  setTemplates: (templates: MemeTemplate[]) => void;
+  addFavorite: (favorite: FavoriteMeme) => void;
+  removeFavorite: (id: string) => void;
 }
 
 export const useMemeStore = create<MemeStore>()(
   persist(
-    (set) => ({
+    set => ({
       templates: [],
       favorites: [],
 
-      setTemplates: (templates) => set({ templates }),
-      addFavorite: (favorite) => set((state) => ({
-        favorites: [favorite, ...state.favorites]
-      })),
-      removeFavorite: (id) => set((state) => ({
-        favorites: state.favorites.filter(f => f.id !== id)
-      })),
+      setTemplates: templates => set({ templates }),
+      addFavorite: favorite =>
+        set(state => ({
+          favorites: [favorite, ...state.favorites],
+        })),
+      removeFavorite: id =>
+        set(state => ({
+          favorites: state.favorites.filter(f => f.id !== id),
+        })),
     }),
     {
       name: 'memelab-storage',
       storage: createJSONStorage(() => localStorage),
     }
   )
-)
+);

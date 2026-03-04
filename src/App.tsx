@@ -1,27 +1,21 @@
-import { motion } from 'framer-motion'
-import { useSettingsStore } from '@/stores/settings'
-import {
-  Smile,
-  Zap,
-  Moon,
-  Sun,
-  Settings,
-  Sparkles,
-  Download,
-  Heart,
-  Image,
-} from 'lucide-react'
-import { MemeGenerator } from './components/MemeGenerator'
-import { SettingsPanel } from './components/SettingsPanel'
-import { ToastContainer } from './components/Toast'
-import { useStatsStore } from '@/stores/stats'
+import { motion } from 'framer-motion';
+import { useSettingsStore } from '@/stores/settings';
+import { Smile, Zap, Moon, Sun, Settings, Sparkles, Download, Heart, Image } from 'lucide-react';
+import { MemeGenerator } from './components/MemeGenerator';
+import { SettingsPanel } from './components/SettingsPanel';
+import { ToastContainer } from './components/Toast';
+import { useStatsStore } from '@/stores/stats';
 
 export default function App() {
-  const { isDarkMode, toggleDarkMode, toggleHelp, applyTheme } = useSettingsStore()
-  const stats = useStatsStore()
+  const { isDarkMode, toggleDarkMode, toggleHelp, applyTheme } = useSettingsStore();
+  const stats = useStatsStore();
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`} role="application" aria-label="MemeLab Meme Generator">
+    <div
+      className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}
+      role="application"
+      aria-label="MemeLab Meme Generator"
+    >
       <SettingsPanel />
       <ToastContainer />
 
@@ -50,14 +44,19 @@ export default function App() {
             </div>
 
             <button
-              onClick={() => { toggleDarkMode(); applyTheme() }}
+              onClick={() => {
+                toggleDarkMode();
+                applyTheme();
+              }}
               className="p-2.5 rounded-xl bg-surface-secondary border border-border text-text-secondary hover:text-brand-primary hover:border-brand-primary/30 transition-all cursor-pointer"
-              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
-              onClick={() => { toggleHelp() }}
+              onClick={() => {
+                toggleHelp();
+              }}
               className="p-2.5 rounded-xl bg-surface-secondary border border-border text-text-secondary hover:text-brand-primary hover:border-brand-primary/30 transition-all cursor-pointer"
               aria-label="Open settings"
             >
@@ -81,7 +80,8 @@ export default function App() {
               Create Memes that Go Viral
             </h2>
             <p className="text-text-secondary text-lg leading-relaxed">
-              The ultimate workspace for digital creators. Customize templates, upload your own images, and share instantly.
+              The ultimate workspace for digital creators. Customize templates, upload your own
+              images, and share instantly.
             </p>
           </motion.div>
         </div>
@@ -101,7 +101,7 @@ export default function App() {
             { icon: Download, label: 'HD Export', desc: 'High quality PNG' },
             { icon: Heart, label: 'Favorites', desc: 'Save your best' },
             { icon: Zap, label: 'Instant', desc: 'No signup needed' },
-          ].map((feature) => (
+          ].map(feature => (
             <div key={feature.label} className="card-elevated p-5 text-center group cursor-default">
               <feature.icon className="w-6 h-6 mx-auto mb-3 text-brand-primary group-hover:scale-110 transition-transform" />
               <div className="font-display font-bold text-sm mb-1">{feature.label}</div>
@@ -116,12 +116,10 @@ export default function App() {
               <Smile size={18} />
               <span className="font-display font-bold text-sm">MemeLab v2.0</span>
             </div>
-            <p className="text-text-muted text-xs">
-              Built with React + Vite + Tailwind
-            </p>
+            <p className="text-text-muted text-xs">Built with React + Vite + Tailwind</p>
           </div>
         </footer>
       </div>
     </div>
-  )
+  );
 }

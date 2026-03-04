@@ -1,30 +1,30 @@
-import express from 'express'
-import cors from 'cors'
+import express from 'express';
+import cors from 'cors';
 
-const app = express()
-const PORT = 3001
+const app = express();
+const PORT = 3001;
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
-const cache = new Map()
-const CACHE_TTL = 10 * 60 * 1000
+const cache = new Map();
+const CACHE_TTL = 10 * 60 * 1000;
 
 function getCached(key) {
-  const entry = cache.get(key)
-  if (!entry) return null
+  const entry = cache.get(key);
+  if (!entry) return null;
   if (Date.now() - entry.timestamp > CACHE_TTL) {
-    cache.delete(key)
-    return null
+    cache.delete(key);
+    return null;
   }
-  return entry.data
+  return entry.data;
 }
 
 function setCache(key, data) {
-  cache.set(key, { data, timestamp: Date.now() })
+  cache.set(key, { data, timestamp: Date.now() });
   if (cache.size > 300) {
-    const oldest = cache.keys().next().value
-    cache.delete(oldest)
+    const oldest = cache.keys().next().value;
+    cache.delete(oldest);
   }
 }
 
@@ -43,11 +43,11 @@ const CATEGORY_QUERIES = {
   sports: 'sports memes football basketball',
   gaming: 'gaming memes gamer memes',
   ai: 'ai generated memes artificial intelligence memes',
-}
+};
 
 async function searchSerper(query, num = 20) {
-  const apiKey = process.env.SERPER_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.SERPER_API_KEY;
+  if (!apiKey) return [];
 
   const response = await fetch('https://google.serper.dev/images', {
     method: 'POST',
@@ -56,11 +56,11 @@ async function searchSerper(query, num = 20) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ q: query + ' meme', num, gl: 'us' }),
-  })
+  });
 
-  if (!response.ok) throw new Error(`Serper: ${response.status}`)
+  if (!response.ok) throw new Error(`Serper: ${response.status}`);
 
-  const data = await response.json()
+  const data = await response.json();
   return (data.images || []).map((img, i) => ({
     id: `serper-${Date.now()}-${i}`,
     name: img.title || 'Meme',
@@ -70,12 +70,12 @@ async function searchSerper(query, num = 20) {
     source: 'serper',
     sourceUrl: img.link,
     thumbnail: img.thumbnailUrl || img.imageUrl,
-  }))
+  }));
 }
 
 async function searchTavily(query, num = 20) {
-  const apiKey = process.env.TAVILY_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.TAVILY_API_KEY;
+  if (!apiKey) return [];
 
   const response = await fetch('https://api.tavily.com/search', {
     method: 'POST',
@@ -87,11 +87,11 @@ async function searchTavily(query, num = 20) {
       include_images: true,
       max_results: num,
     }),
-  })
+  });
 
-  if (!response.ok) throw new Error(`Tavily: ${response.status}`)
+  if (!response.ok) throw new Error(`Tavily: ${response.status}`);
 
-  const data = await response.json()
+  const data = await response.json();
   return (data.images || []).map((url, i) => ({
     id: `tavily-${Date.now()}-${i}`,
     name: `Meme ${i + 1}`,
@@ -101,30 +101,30 @@ async function searchTavily(query, num = 20) {
     source: 'tavily',
     sourceUrl: '',
     thumbnail: typeof url === 'string' ? url : url.url,
-  }))
+  }));
 }
 
 async function searchBrave(query, num = 20) {
-  const apiKey = process.env.BRAVE_SEARCH_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.BRAVE_SEARCH_API_KEY;
+  if (!apiKey) return [];
 
   const params = new URLSearchParams({
     q: query + ' meme',
     count: String(Math.min(num, 100)),
     safesearch: 'off',
-  })
+  });
 
   const response = await fetch(`https://api.search.brave.com/res/v1/images/search?${params}`, {
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Accept-Encoding': 'gzip',
       'X-Subscription-Token': apiKey,
     },
-  })
+  });
 
-  if (!response.ok) throw new Error(`Brave: ${response.status}`)
+  if (!response.ok) throw new Error(`Brave: ${response.status}`);
 
-  const data = await response.json()
+  const data = await response.json();
   return (data.results || []).map((img, i) => ({
     id: `brave-${Date.now()}-${i}`,
     name: img.title || 'Meme',
@@ -134,12 +134,12 @@ async function searchBrave(query, num = 20) {
     source: 'brave',
     sourceUrl: img.url || '',
     thumbnail: img.thumbnail?.src || img.properties?.url || '',
-  }))
+  }));
 }
 
 async function searchSerpApi(query, num = 20) {
-  const apiKey = process.env.SERPAPI_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.SERPAPI_API_KEY;
+  if (!apiKey) return [];
 
   const params = new URLSearchParams({
     engine: 'google_images',
@@ -147,12 +147,12 @@ async function searchSerpApi(query, num = 20) {
     api_key: apiKey,
     ijn: '0',
     safe: 'off',
-  })
+  });
 
-  const response = await fetch(`https://serpapi.com/search?${params}`)
-  if (!response.ok) throw new Error(`SerpAPI: ${response.status}`)
+  const response = await fetch(`https://serpapi.com/search?${params}`);
+  if (!response.ok) throw new Error(`SerpAPI: ${response.status}`);
 
-  const data = await response.json()
+  const data = await response.json();
   return (data.images_results || []).slice(0, num).map((img, i) => ({
     id: `serpapi-${Date.now()}-${i}`,
     name: img.title || 'Meme',
@@ -162,28 +162,29 @@ async function searchSerpApi(query, num = 20) {
     source: 'serpapi',
     sourceUrl: img.link || '',
     thumbnail: img.thumbnail || img.original || '',
-  }))
+  }));
 }
 
 async function searchSearchApi(query, num = 20) {
-  const apiKey = process.env.SEARCHAPI_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.SEARCHAPI_API_KEY;
+  if (!apiKey) return [];
 
   const params = new URLSearchParams({
     engine: 'google_images',
     q: query + ' meme',
     api_key: apiKey,
-  })
+  });
 
-  const response = await fetch(`https://www.searchapi.io/api/v1/search?${params}`)
-  if (!response.ok) throw new Error(`SearchAPI: ${response.status}`)
+  const response = await fetch(`https://www.searchapi.io/api/v1/search?${params}`);
+  if (!response.ok) throw new Error(`SearchAPI: ${response.status}`);
 
-  const data = await response.json()
-  const images = data.images || data.images_results || []
+  const data = await response.json();
+  const images = data.images || data.images_results || [];
   return images.slice(0, num).map((img, i) => {
-    const imgUrl = typeof img.original === 'string' ? img.original : (img.original?.link || '')
-    const thumbUrl = typeof img.thumbnail === 'string' ? img.thumbnail : (img.thumbnail?.link || '')
-    const srcUrl = typeof img.link === 'string' ? img.link : (typeof img.source === 'string' ? img.source : '')
+    const imgUrl = typeof img.original === 'string' ? img.original : img.original?.link || '';
+    const thumbUrl = typeof img.thumbnail === 'string' ? img.thumbnail : img.thumbnail?.link || '';
+    const srcUrl =
+      typeof img.link === 'string' ? img.link : typeof img.source === 'string' ? img.source : '';
     return {
       id: `searchapi-${Date.now()}-${i}`,
       name: img.title || 'Meme',
@@ -193,13 +194,13 @@ async function searchSearchApi(query, num = 20) {
       source: 'searchapi',
       sourceUrl: srcUrl,
       thumbnail: thumbUrl || imgUrl || img.image || '',
-    }
-  })
+    };
+  });
 }
 
 async function searchExa(query, num = 10) {
-  const apiKey = process.env.EXA_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.EXA_API_KEY;
+  if (!apiKey) return [];
 
   const response = await fetch('https://api.exa.ai/search', {
     method: 'POST',
@@ -212,11 +213,11 @@ async function searchExa(query, num = 10) {
       numResults: num,
       contents: { text: false },
     }),
-  })
+  });
 
-  if (!response.ok) throw new Error(`Exa: ${response.status}`)
+  if (!response.ok) throw new Error(`Exa: ${response.status}`);
 
-  const data = await response.json()
+  const data = await response.json();
   return (data.results || [])
     .filter(r => r.image || r.url)
     .map((r, i) => ({
@@ -228,25 +229,25 @@ async function searchExa(query, num = 10) {
       source: 'exa',
       sourceUrl: r.url || '',
       thumbnail: r.image || r.favicon || '',
-    }))
+    }));
 }
 
 async function searchScrapingDog(query, num = 10) {
-  const apiKey = process.env.SCRAPINGDOG_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.SCRAPINGDOG_API_KEY;
+  if (!apiKey) return [];
 
   const params = new URLSearchParams({
     api_key: apiKey,
     query: query + ' meme',
     results: String(num),
     country: 'us',
-  })
+  });
 
-  const response = await fetch(`https://api.scrapingdog.com/google_images?${params}`)
-  if (!response.ok) throw new Error(`ScrapingDog: ${response.status}`)
+  const response = await fetch(`https://api.scrapingdog.com/google_images?${params}`);
+  if (!response.ok) throw new Error(`ScrapingDog: ${response.status}`);
 
-  const data = await response.json()
-  const results = Array.isArray(data) ? data : (data.images_results || data.results || [])
+  const data = await response.json();
+  const results = Array.isArray(data) ? data : data.images_results || data.results || [];
   return results.slice(0, num).map((img, i) => ({
     id: `scrapingdog-${Date.now()}-${i}`,
     name: img.title || 'Meme',
@@ -256,12 +257,12 @@ async function searchScrapingDog(query, num = 10) {
     source: 'scrapingdog',
     sourceUrl: img.link || '',
     thumbnail: img.image || img.original || '',
-  }))
+  }));
 }
 
 async function searchApify(query, num = 10) {
-  const apiKey = process.env.APIFY_API_KEY
-  if (!apiKey) return []
+  const apiKey = process.env.APIFY_API_KEY;
+  if (!apiKey) return [];
 
   try {
     const response = await fetch(
@@ -275,11 +276,11 @@ async function searchApify(query, num = 10) {
         }),
         signal: AbortSignal.timeout(45000),
       }
-    )
+    );
 
-    if (!response.ok) throw new Error(`Apify: ${response.status}`)
+    if (!response.ok) throw new Error(`Apify: ${response.status}`);
 
-    const data = await response.json()
+    const data = await response.json();
     return (Array.isArray(data) ? data : []).slice(0, num).map((img, i) => ({
       id: `apify-${Date.now()}-${i}`,
       name: img.title || img.alt || 'Meme',
@@ -289,27 +290,27 @@ async function searchApify(query, num = 10) {
       source: 'apify',
       sourceUrl: img.sourceUrl || img.link || '',
       thumbnail: img.thumbnailUrl || img.url || '',
-    }))
+    }));
   } catch (e) {
-    throw new Error(`Apify: ${e.message}`)
+    throw new Error(`Apify: ${e.message}`);
   }
 }
 
 async function getImgflipTemplates() {
-  const cacheKey = 'imgflip-templates'
-  const cached = getCached(cacheKey)
-  if (cached) return cached
+  const cacheKey = 'imgflip-templates';
+  const cached = getCached(cacheKey);
+  if (cached) return cached;
 
-  const response = await fetch('https://api.imgflip.com/get_memes')
-  const data = await response.json()
-  const memes = (data.data?.memes || []).map((m) => ({
+  const response = await fetch('https://api.imgflip.com/get_memes');
+  const data = await response.json();
+  const memes = (data.data?.memes || []).map(m => ({
     ...m,
     source: 'imgflip',
     thumbnail: m.url,
-  }))
+  }));
 
-  setCache(cacheKey, memes)
-  return memes
+  setCache(cacheKey, memes);
+  return memes;
 }
 
 const SOURCE_MAP = {
@@ -321,179 +322,185 @@ const SOURCE_MAP = {
   exa: searchExa,
   scrapingdog: searchScrapingDog,
   apify: searchApify,
-}
+};
 
-const PRIMARY_SOURCES = ['serper', 'brave', 'serpapi']
-const SECONDARY_SOURCES = ['tavily', 'searchapi', 'scrapingdog']
-const TERTIARY_SOURCES = ['exa', 'apify']
+const PRIMARY_SOURCES = ['serper', 'brave', 'serpapi'];
+const SECONDARY_SOURCES = ['tavily', 'searchapi', 'scrapingdog'];
+const TERTIARY_SOURCES = ['exa', 'apify'];
 
 function deduplicateResults(results) {
-  const unique = []
-  const seen = new Set()
+  const unique = [];
+  const seen = new Set();
   for (const r of results) {
     if (r.url && !seen.has(r.url)) {
-      seen.add(r.url)
-      unique.push(r)
+      seen.add(r.url);
+      unique.push(r);
     }
   }
-  return unique
+  return unique;
 }
 
 async function multiSourceSearch(query, num = 20, sources = null) {
-  const selectedSources = sources || [...PRIMARY_SOURCES, ...SECONDARY_SOURCES, ...TERTIARY_SOURCES]
-  const sourceStatus = {}
-  const promises = selectedSources.map(async (src) => {
-    const fn = SOURCE_MAP[src]
-    if (!fn) { sourceStatus[src] = 'unavailable'; return [] }
-    try {
-      const perSource = Math.ceil(num / selectedSources.length)
-      const results = await fn(query, perSource)
-      sourceStatus[src] = results.length > 0 ? 'success' : 'empty'
-      return results
-    } catch (e) {
-      console.error(`${src} error:`, e.message)
-      sourceStatus[src] = 'error'
-      return []
+  const selectedSources = sources || [
+    ...PRIMARY_SOURCES,
+    ...SECONDARY_SOURCES,
+    ...TERTIARY_SOURCES,
+  ];
+  const sourceStatus = {};
+  const promises = selectedSources.map(async src => {
+    const fn = SOURCE_MAP[src];
+    if (!fn) {
+      sourceStatus[src] = 'unavailable';
+      return [];
     }
-  })
+    try {
+      const perSource = Math.ceil(num / selectedSources.length);
+      const results = await fn(query, perSource);
+      sourceStatus[src] = results.length > 0 ? 'success' : 'empty';
+      return results;
+    } catch (e) {
+      console.error(`${src} error:`, e.message);
+      sourceStatus[src] = 'error';
+      return [];
+    }
+  });
 
-  const allResults = await Promise.allSettled(promises)
-  const combined = allResults
-    .filter(r => r.status === 'fulfilled')
-    .flatMap(r => r.value)
+  const allResults = await Promise.allSettled(promises);
+  const combined = allResults.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
 
-  return { results: deduplicateResults(combined), sourceStatus }
+  return { results: deduplicateResults(combined), sourceStatus };
 }
 
 app.get('/api/memes/templates', async (req, res) => {
   try {
-    const templates = await getImgflipTemplates()
-    res.json({ success: true, data: templates })
+    const templates = await getImgflipTemplates();
+    res.json({ success: true, data: templates });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    res.status(500).json({ success: false, error: error.message });
   }
-})
+});
 
 app.get('/api/memes/search', async (req, res) => {
   try {
-    const { q, source = 'all', num = 20 } = req.query
-    if (!q) return res.status(400).json({ success: false, error: 'Query required' })
+    const { q, source = 'all', num = 20 } = req.query;
+    if (!q) return res.status(400).json({ success: false, error: 'Query required' });
 
-    const cacheKey = `search-${q}-${source}-${num}`
-    const cached = getCached(cacheKey)
-    if (cached) return res.json({ success: true, data: cached, cached: true })
+    const cacheKey = `search-${q}-${source}-${num}`;
+    const cached = getCached(cacheKey);
+    if (cached) return res.json({ success: true, data: cached, cached: true });
 
-    let results = []
+    let results = [];
 
     if (source === 'all') {
-      const { results: searchResults, sourceStatus } = await multiSourceSearch(q, parseInt(num))
-      results = searchResults
+      const { results: searchResults, sourceStatus } = await multiSourceSearch(q, parseInt(num));
+      results = searchResults;
 
       if (q.length > 0) {
         try {
-          const templates = await getImgflipTemplates()
-          const filtered = templates.filter((t) =>
-            t.name.toLowerCase().includes(q.toLowerCase())
-          )
-          results.push(...filtered.slice(0, 5))
-          sourceStatus['imgflip'] = 'success'
+          const templates = await getImgflipTemplates();
+          const filtered = templates.filter(t => t.name.toLowerCase().includes(q.toLowerCase()));
+          results.push(...filtered.slice(0, 5));
+          sourceStatus['imgflip'] = 'success';
         } catch (e) {
-          console.error('Imgflip error:', e.message)
-          sourceStatus['imgflip'] = 'error'
+          console.error('Imgflip error:', e.message);
+          sourceStatus['imgflip'] = 'error';
         }
       }
 
-      results = deduplicateResults(results)
-      setCache(cacheKey, results)
-      return res.json({ success: true, data: results, sources: getActiveSources(), sourceStatus })
+      results = deduplicateResults(results);
+      setCache(cacheKey, results);
+      return res.json({ success: true, data: results, sources: getActiveSources(), sourceStatus });
     } else if (SOURCE_MAP[source]) {
       try {
-        results = await SOURCE_MAP[source](q, parseInt(num))
+        results = await SOURCE_MAP[source](q, parseInt(num));
       } catch (e) {
-        console.error(`${source} error:`, e.message)
+        console.error(`${source} error:`, e.message);
       }
     } else if (source === 'imgflip') {
       try {
-        const templates = await getImgflipTemplates()
-        results = templates.filter((t) =>
-          t.name.toLowerCase().includes(q.toLowerCase())
-        ).slice(0, parseInt(num))
+        const templates = await getImgflipTemplates();
+        results = templates
+          .filter(t => t.name.toLowerCase().includes(q.toLowerCase()))
+          .slice(0, parseInt(num));
       } catch (e) {
-        console.error('Imgflip error:', e.message)
+        console.error('Imgflip error:', e.message);
       }
     }
 
-    setCache(cacheKey, results)
-    res.json({ success: true, data: results, sources: getActiveSources() })
+    setCache(cacheKey, results);
+    res.json({ success: true, data: results, sources: getActiveSources() });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    res.status(500).json({ success: false, error: error.message });
   }
-})
+});
 
 app.get('/api/memes/trending', async (req, res) => {
   try {
-    const cacheKey = 'trending-memes'
-    const cached = getCached(cacheKey)
-    if (cached) return res.json({ success: true, data: cached, cached: true })
+    const cacheKey = 'trending-memes';
+    const cached = getCached(cacheKey);
+    if (cached) return res.json({ success: true, data: cached, cached: true });
 
-    const { results, sourceStatus } = await multiSourceSearch('trending memes 2025 viral', 30)
+    const { results, sourceStatus } = await multiSourceSearch('trending memes 2025 viral', 30);
 
-    setCache(cacheKey, results)
-    res.json({ success: true, data: results, sources: getActiveSources(), sourceStatus })
+    setCache(cacheKey, results);
+    res.json({ success: true, data: results, sources: getActiveSources(), sourceStatus });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    res.status(500).json({ success: false, error: error.message });
   }
-})
+});
 
 app.get('/api/memes/category/:category', async (req, res) => {
   try {
-    const { category } = req.params
-    const { page = 1, num = 20 } = req.query
-    const query = CATEGORY_QUERIES[category]
+    const { category } = req.params;
+    const { page = 1, num = 20 } = req.query;
+    const query = CATEGORY_QUERIES[category];
 
     if (!query) {
-      return res.status(400).json({ success: false, error: 'Invalid category' })
+      return res.status(400).json({ success: false, error: 'Invalid category' });
     }
 
-    const cacheKey = `category-${category}-${page}`
-    const cached = getCached(cacheKey)
-    if (cached) return res.json({ success: true, data: cached, cached: true })
+    const cacheKey = `category-${category}-${page}`;
+    const cached = getCached(cacheKey);
+    if (cached) return res.json({ success: true, data: cached, cached: true });
 
-    const { results, sourceStatus } = await multiSourceSearch(query, parseInt(num))
+    const { results, sourceStatus } = await multiSourceSearch(query, parseInt(num));
 
-    setCache(cacheKey, results)
-    res.json({ success: true, data: results, sources: getActiveSources(), sourceStatus })
+    setCache(cacheKey, results);
+    res.json({ success: true, data: results, sources: getActiveSources(), sourceStatus });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
+    res.status(500).json({ success: false, error: error.message });
   }
-})
+});
 
 app.get('/api/categories', (req, res) => {
-  const categories = Object.keys(CATEGORY_QUERIES).map((key) => ({
+  const categories = Object.keys(CATEGORY_QUERIES).map(key => ({
     id: key,
-    name: key.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+    name: key
+      .split('-')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' '),
     query: CATEGORY_QUERIES[key],
-  }))
-  res.json({ success: true, data: categories })
-})
+  }));
+  res.json({ success: true, data: categories });
+});
 
 function getActiveSources() {
-  const sources = []
-  if (process.env.SERPER_API_KEY) sources.push('serper')
-  if (process.env.TAVILY_API_KEY) sources.push('tavily')
-  if (process.env.BRAVE_SEARCH_API_KEY) sources.push('brave')
-  if (process.env.SERPAPI_API_KEY) sources.push('serpapi')
-  if (process.env.SEARCHAPI_API_KEY) sources.push('searchapi')
-  if (process.env.EXA_API_KEY) sources.push('exa')
-  if (process.env.SCRAPINGDOG_API_KEY) sources.push('scrapingdog')
-  if (process.env.APIFY_API_KEY) sources.push('apify')
-  sources.push('imgflip')
-  return sources
+  const sources = [];
+  if (process.env.SERPER_API_KEY) sources.push('serper');
+  if (process.env.TAVILY_API_KEY) sources.push('tavily');
+  if (process.env.BRAVE_SEARCH_API_KEY) sources.push('brave');
+  if (process.env.SERPAPI_API_KEY) sources.push('serpapi');
+  if (process.env.SEARCHAPI_API_KEY) sources.push('searchapi');
+  if (process.env.EXA_API_KEY) sources.push('exa');
+  if (process.env.SCRAPINGDOG_API_KEY) sources.push('scrapingdog');
+  if (process.env.APIFY_API_KEY) sources.push('apify');
+  sources.push('imgflip');
+  return sources;
 }
 
 app.get('/api/sources', (req, res) => {
-  res.json({ success: true, data: getActiveSources() })
-})
+  res.json({ success: true, data: getActiveSources() });
+});
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -501,11 +508,11 @@ app.get('/api/health', (req, res) => {
     timestamp: Date.now(),
     activeSources: getActiveSources(),
     totalSources: getActiveSources().length,
-  })
-})
+  });
+});
 
 app.listen(PORT, '0.0.0.0', () => {
-  const sources = getActiveSources()
-  console.log(`Meme API server running on port ${PORT}`)
-  console.log(`Active search sources (${sources.length}): ${sources.join(', ')}`)
-})
+  const sources = getActiveSources();
+  console.log(`Meme API server running on port ${PORT}`);
+  console.log(`Active search sources (${sources.length}): ${sources.join(', ')}`);
+});

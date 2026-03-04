@@ -1,41 +1,51 @@
-import { useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle, AlertCircle, Info, X } from 'lucide-react'
-import { useToastStore } from '@/stores/toastStore'
+import { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
+import { useToastStore } from '@/stores/toastStore';
 
 const icons = {
   success: CheckCircle,
   error: AlertCircle,
   info: Info,
-}
+};
 
 const colors = {
   success: 'text-emerald-500',
   error: 'text-red-500',
   info: 'text-brand-primary',
-}
+};
 
 export function ToastContainer() {
-  const { toasts, removeToast } = useToastStore()
+  const { toasts, removeToast } = useToastStore();
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none" role="status" aria-live="polite">
+    <div
+      className="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"
+      role="status"
+      aria-live="polite"
+    >
       <AnimatePresence>
-        {toasts.map((toast) => (
+        {toasts.map(toast => (
           <ToastItem key={toast.id} toast={toast} onClose={() => removeToast(toast.id)} />
         ))}
       </AnimatePresence>
     </div>
-  )
+  );
 }
 
-function ToastItem({ toast, onClose }: { toast: { id: string; message: string; type: 'success' | 'error' | 'info'; duration: number }; onClose: () => void }) {
-  const Icon = icons[toast.type]
+function ToastItem({
+  toast,
+  onClose,
+}: {
+  toast: { id: string; message: string; type: 'success' | 'error' | 'info'; duration: number };
+  onClose: () => void;
+}) {
+  const Icon = icons[toast.type];
 
   useEffect(() => {
-    const timer = setTimeout(onClose, toast.duration)
-    return () => clearTimeout(timer)
-  }, [toast.duration, onClose])
+    const timer = setTimeout(onClose, toast.duration);
+    return () => clearTimeout(timer);
+  }, [toast.duration, onClose]);
 
   return (
     <motion.div
@@ -46,9 +56,12 @@ function ToastItem({ toast, onClose }: { toast: { id: string; message: string; t
     >
       <Icon className={`w-5 h-5 shrink-0 ${colors[toast.type]}`} />
       <p className="text-sm font-medium flex-1">{toast.message}</p>
-      <button onClick={onClose} className="text-text-muted hover:text-text-primary transition-colors cursor-pointer">
+      <button
+        onClick={onClose}
+        className="text-text-muted hover:text-text-primary transition-colors cursor-pointer"
+      >
         <X className="w-4 h-4" />
       </button>
     </motion.div>
-  )
+  );
 }

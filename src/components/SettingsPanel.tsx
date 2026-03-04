@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useSettingsStore } from '@/stores/settings'
-import { useStatsStore } from '@/stores/stats'
-import { useAudio } from '@/hooks/useAudio'
-import { KEYBOARD_SHORTCUTS } from '@/utils/constants'
+import { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useSettingsStore } from '@/stores/settings';
+import { useStatsStore } from '@/stores/stats';
+import { useAudio } from '@/hooks/useAudio';
+import { KEYBOARD_SHORTCUTS } from '@/utils/constants';
 import {
   Volume2,
   Moon,
@@ -14,41 +14,41 @@ import {
   Keyboard,
   BarChart3,
   Settings,
-} from 'lucide-react'
+} from 'lucide-react';
 
 export function SettingsPanel() {
-  const settings = useSettingsStore()
-  const stats = useStatsStore()
-  const { playClick } = useAudio()
+  const settings = useSettingsStore();
+  const stats = useStatsStore();
+  const { playClick } = useAudio();
 
   const themeOptions = [
     { value: 'dark' as const, label: 'Dark', icon: Moon },
     { value: 'light' as const, label: 'Light', icon: Sun },
     { value: 'system' as const, label: 'System', icon: Monitor },
-  ]
+  ];
 
   const formatTime = (seconds: number): string => {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    if (hours > 0) return `${hours}h ${minutes}m`
-    return `${minutes}m`
-  }
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
+  };
 
   useEffect(() => {
     if (settings.showHelp) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = ''
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = ''
-    }
-  }, [settings.showHelp])
+      document.body.style.overflow = '';
+    };
+  }, [settings.showHelp]);
 
   const close = () => {
-    playClick()
-    settings.toggleHelp()
-  }
+    playClick();
+    settings.toggleHelp();
+  };
 
   return (
     <AnimatePresence>
@@ -69,14 +69,16 @@ export function SettingsPanel() {
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="card-elevated w-full max-w-lg max-h-[85vh] overflow-y-auto custom-scrollbar"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <header className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-surface-elevated z-10 rounded-t-[1.25rem]">
               <div className="flex items-center gap-3">
                 <div className="bg-brand-primary/10 p-2 rounded-lg">
                   <Settings className="text-brand-primary w-5 h-5" />
                 </div>
-                <h2 id="settings-title" className="text-lg font-display font-bold">Settings</h2>
+                <h2 id="settings-title" className="text-lg font-display font-bold">
+                  Settings
+                </h2>
               </div>
               <button
                 onClick={close}
@@ -96,8 +98,8 @@ export function SettingsPanel() {
                   <span className="font-medium text-sm">Sound Effects</span>
                   <button
                     onClick={() => {
-                      playClick()
-                      settings.toggleSound()
+                      playClick();
+                      settings.toggleSound();
                     }}
                     className={`relative w-12 h-6 rounded-full transition-colors cursor-pointer ${
                       settings.soundEnabled ? 'bg-brand-primary' : 'bg-border'
@@ -119,12 +121,12 @@ export function SettingsPanel() {
                   <Sun size={14} /> Theme
                 </h3>
                 <div className="grid grid-cols-3 gap-3">
-                  {themeOptions.map((option) => (
+                  {themeOptions.map(option => (
                     <button
                       key={option.value}
                       onClick={() => {
-                        playClick()
-                        settings.setTheme(option.value)
+                        playClick();
+                        settings.setTheme(option.value);
                       }}
                       className={`flex flex-col items-center p-4 rounded-xl transition-all border-2 cursor-pointer ${
                         settings.theme === option.value
@@ -156,21 +158,38 @@ export function SettingsPanel() {
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: stats.totalMemesCreated, label: 'Memes Created', color: 'text-text-primary' },
-                    { value: stats.totalDownloads, label: 'Downloads', color: 'text-brand-primary' },
+                    {
+                      value: stats.totalMemesCreated,
+                      label: 'Memes Created',
+                      color: 'text-text-primary',
+                    },
+                    {
+                      value: stats.totalDownloads,
+                      label: 'Downloads',
+                      color: 'text-brand-primary',
+                    },
                     { value: stats.totalFavorites, label: 'Favorites', color: 'text-pink-500' },
-                    { value: formatTime(stats.totalTimeSpent), label: 'Time Spent', color: 'text-brand-accent' },
-                  ].map((stat) => (
-                    <div key={stat.label} className="bg-surface-secondary rounded-xl p-4 text-center">
+                    {
+                      value: formatTime(stats.totalTimeSpent),
+                      label: 'Time Spent',
+                      color: 'text-brand-accent',
+                    },
+                  ].map(stat => (
+                    <div
+                      key={stat.label}
+                      className="bg-surface-secondary rounded-xl p-4 text-center"
+                    >
                       <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
-                      <div className="text-[10px] text-text-muted uppercase tracking-wider mt-1 font-semibold">{stat.label}</div>
+                      <div className="text-[10px] text-text-muted uppercase tracking-wider mt-1 font-semibold">
+                        {stat.label}
+                      </div>
                     </div>
                   ))}
                 </div>
                 <button
                   onClick={() => {
-                    playClick()
-                    stats.resetStats()
+                    playClick();
+                    stats.resetStats();
                   }}
                   className="mt-3 w-full flex items-center justify-center gap-2 p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors text-sm font-medium cursor-pointer"
                 >
@@ -183,7 +202,7 @@ export function SettingsPanel() {
                   <Keyboard size={14} /> Keyboard Shortcuts
                 </h3>
                 <div className="space-y-1.5">
-                  {KEYBOARD_SHORTCUTS.map((shortcut) => (
+                  {KEYBOARD_SHORTCUTS.map(shortcut => (
                     <div
                       key={shortcut.action}
                       className="flex items-center justify-between p-3 bg-surface-secondary rounded-lg"
@@ -205,5 +224,5 @@ export function SettingsPanel() {
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

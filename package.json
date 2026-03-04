@@ -8,7 +8,15 @@
     "dev:frontend": "vite",
     "dev:backend": "node server/index.js",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@types/node": "^25.3.0",
@@ -41,6 +49,10 @@
     "tailwindcss": "^4.0.0",
     "typescript": "~5.9.3",
     "vite": "^6.4.1",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "": "testing-library/jest-dom",
+    "prettier": "^3",
+    "eslint": "^8",
+    "typescript-eslint": "^7"
   }
 }
