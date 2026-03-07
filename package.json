@@ -3,6 +3,9 @@
   "private": true,
   "version": "2.1.0",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "concurrently \"vite\" \"node server/index.js\"",
     "dev:frontend": "vite",
@@ -16,14 +19,13 @@
     "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
-    "@types/node": "^25.3.0",
     "clsx": "^2.1.1",
     "concurrently": "^9.2.1",
     "cors": "^2.8.6",
-    "eslint-plugin-react": "^7.37.5",
     "express": "^5.2.1",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.29.2",
@@ -40,6 +42,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/file-saver": "^2.0.7",
+    "@types/node": "^25.3.0",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.7.0",
@@ -50,9 +53,9 @@
     "typescript": "~5.9.3",
     "vite": "^6.4.1",
     "vitest": "^4.0.18",
-    "": "testing-library/jest-dom",
     "prettier": "^3",
     "eslint": "^8",
-    "typescript-eslint": "^7"
+    "typescript-eslint": "^7",
+    "@eslint/js": "^9"
   }
 }
