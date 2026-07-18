@@ -116,7 +116,14 @@ export default function App() {
               <Smile size={18} />
               <span className="font-display font-bold text-sm">MemeLab v2.0</span>
             </div>
-            <p className="text-text-muted text-xs">Built with React + Vite + Tailwind</p>
+            <div className="flex items-center gap-4 text-xs text-text-muted">
+              <a href="https://github.com/mk-knight23/19-web-viral-creator" target="_blank" rel="noopener noreferrer" className="hover:text-brand-primary transition-colors">GitHub</a>
+              <span>·</span>
+              <span>No data collected</span>
+              <span>·</span>
+              <span>Free & open-source</span>
+            </div>
+            <p className="text-text-muted text-xs">© 2026 MemeLab by Musharraf Kazi</p>
           </div>
         </footer>
       </div>
