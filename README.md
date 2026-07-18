@@ -1,116 +1,34 @@
-# [![CI/CD](https://github.com/mk-knight23/19-web-viral-creator/actions/workflows/ci.yml/badge.svg)](https://github.com/mk-knight23/19-web-viral-creator/actions)
+# MK ViralCanvas
 
-# 🚀 19-web-viral-creator (Collective Production Edition)
+**Social Image, Meme & Content Creator**
 
-## 💎 Overview
-Fully production-grade implementation of 19-web-viral-creator, refactored by the **69-Agent Opencode Collective**.
+Create memes and social media graphics with templates, text styling, and export.
 
-## 🛡️ Trust & Compliance
-- **CI/CD**: Automated GitHub Actions with Gitleaks security scans.
-- **Security**: Standardized [SECURITY.md](SECURITY.md) protocol.
-- **Design**: Opencode Premium Design Tokens integrated.
+🔗 **Live**: [https://19-web-viral-creator.vercel.app](https://19-web-viral-creator.vercel.app)
 
-## 🏁 48-Hour Roadmap
-1. Initialize infrastructure via `.github/workflows`.
-2. Set your secrets in GitHub Environment settings.
-3. Deploy to production via Vercel/Docker.
+## Tech Stack
 
-This repository is part of the **60-Repo Evolution Project** - a comprehensive initiative to modernize, professionalize, and scale a portfolio of 60 web applications and portfolios.
+React 19, TypeScript, Vite 6, Tailwind CSS 4
 
-## 📋 Evolution Status
-
-| Phase | Status | Completion |
-|-------|--------|------------|
-| Phase 1: Portfolios & Web Apps | 🔄 In Progress | 01-20 |
-| Phase 2: SaaS & Tools | ⏳ Pending | 21-40 |
-| Phase 3: AI & Automation | ⏳ Pending | 41-60 |
-
-## 🛠️ Tech Stack
-
-- **Framework:** Dynamic (detected per repository)
-- **Deployment:** Multi-platform (Vercel, Netlify, Firebase, Cloudflare)
-- **CI/CD:** GitHub Actions
-- **Monitoring:** Automated via Evolution Workflow
-
-## 📦 What's Included
-
-### Documentation
-- ✅ Professional README.md
-- ✅ EVOLUTION.md tracking
-- ✅ LinkedIn content assets
-- ✅ Video scripts
-
-### CI/CD
-- ✅ GitHub Actions workflow
-- ✅ Automated testing
-- ✅ Security scanning
-- ✅ Deployment automation
-
-### Deployment Configs
-- ✅ Vercel (`vercel.json`)
-- ✅ Netlify (`netlify.toml`)
-- ✅ Firebase (`firebase.json`)
-- ✅ Cloudflare (`wrangler.toml`)
-
-## 🚀 Quick Start
+## Getting Started
 
 ```bash
-# Clone the repository
-git clone https://github.com/mk-knight23/19-web-viral-creator.git
-cd 19-web-viral-creator
-
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
-
-# Build for production
-npm run build
 ```
 
-## 📊 Evolution Metrics
+## Environment Variables
 
-| Metric | Score |
-|--------|-------|
-| Documentation | 20/20 |
-| CI/CD | 20/20 |
-| Deployment | 20/20 |
-| Code Quality | 20/20 |
-| Security | 20/20 |
-| **Total** | **100/100** |
+See `.env.example`.
 
-## 🌐 Deployment URLs
+## Contributing
 
-| Platform | URL |
-|----------|-----|
-| Vercel | https://19-web-viral-creator.vercel.app |
-| Netlify | https://19-web-viral-creator.netlify.app |
-| Firebase | https://19-web-viral-creator.web.app |
-| Cloudflare | https://19-web-viral-creator.pages.dev |
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## 📱 Social Media Assets
+## License
 
-- **LinkedIn Post:** `content/linkedin-post.md`
-- **Video Script:** `content/video-script.md`
-- **Thumbnail:** `assets/thumbnail.png`
-
-## 🤝 Contributing
-
-This repository is part of an automated evolution project. For issues or suggestions, please open a GitHub issue.
-
-## 📄 License
-
-MIT License - see LICENSE file for details
+MIT
 
 ---
 
-🦾 **Evolved with OpenClaw** | Part of the 60-Repo Evolution Project
-
-## Security
-
-This project follows security best practices:
-- No hardcoded credentials
-- Dependency scanning enabled
-- Security headers configured
-- Regular security audits performed
+Built with care by **Qazi Musharof** — [Kazi Developer](https://www.mkazi.live)
