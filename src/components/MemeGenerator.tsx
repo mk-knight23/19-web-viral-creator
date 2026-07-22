@@ -40,6 +40,7 @@ import {
   searchMemes,
 } from '@/utils/api';
 import { findLayer } from '@/utils/layers';
+import { isEditableTarget } from '@/utils/keyboard';
 import {
   getLastProjectId,
   incrementExportCount,
@@ -177,30 +178,22 @@ export function MemeGenerator() {
   }, [stats]);
 
   const handlersRef = useRef({
-    handleDownload: () => {},
-    handleRandom: () => {},
-    handleFavorite: () => {},
     undo: () => {},
     redo: () => {},
   });
 
+  // Only undo/redo are bound globally. Browser-reserved combos (Ctrl+R
+  // reload, Ctrl+S save, Ctrl+D bookmark) are intentionally left alone, and
+  // shortcuts never fire while the user is typing in an editable control.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (!e.ctrlKey && !e.metaKey) return;
+      if (isEditableTarget(e.target)) return;
       const key = e.key.toLowerCase();
-      if (key === 'd') {
-        e.preventDefault();
-        handlersRef.current.handleDownload();
-      } else if (key === 'r') {
-        e.preventDefault();
-        handlersRef.current.handleRandom();
-      } else if (key === 's') {
-        e.preventDefault();
-        handlersRef.current.handleFavorite();
-      } else if (key === 'z') {
+      if (key === 'z' && !e.shiftKey) {
         e.preventDefault();
         handlersRef.current.undo();
-      } else if (key === 'y') {
+      } else if (key === 'y' || (key === 'z' && e.shiftKey)) {
         e.preventDefault();
         handlersRef.current.redo();
       }
@@ -399,7 +392,7 @@ export function MemeGenerator() {
     addToast('Saved to favorites!', 'success');
   };
 
-  handlersRef.current = { handleDownload, handleRandom, handleFavorite, undo, redo };
+  handlersRef.current = { undo, redo };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 ### Accessibility (WCAG 2.2 AA)
 - Named all editor form controls: the six layer-style sliders (font size, text rotation, stroke width, text opacity, horizontal/vertical position) and the Font/Weight selects now carry `aria-label`s (WCAG 4.1.2 / 1.3.1).
 - Restored keyboard focus visibility on the Font/Weight selects, the Artboard preset select, and the custom width/height inputs — replaced bare `outline-none` with the project's existing `focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary` recipe (WCAG 2.4.7).
+- Settings dialog now manages focus: it moves focus into the dialog on open, traps Tab within it, closes on Escape, and restores focus to the trigger button on close (WCAG 2.4.3 / 2.1.2).
+- Keyboard shortcuts no longer hijack browser-reserved combinations. Ctrl+R (reload), Ctrl+S (save), and Ctrl+D (bookmark) are left to the browser; only undo (Ctrl+Z / Ctrl+Shift+Z) and redo (Ctrl+Y) remain, and no shortcut fires while a text field, textarea, select, or contenteditable element is focused.
+- Removed the never-mounted `useKeyboardControls` hook (dead code whose `e.code`/`e.key` map could never match) and reconciled the advertised shortcut list in Settings so it only shows shortcuts that actually work.
+- Added tests: `isEditableTarget` guard (7 cases) and Settings dialog focus/Escape behaviour (2 cases).
 
 ## [2.3.0] - 2026-07-22
 - P0 upgrade pass: fixed brand spelling (Qazi → Kazi), removed stale deploy artifacts, replaced legacy Vercel builds config with modern SPA rewrites + security headers.
