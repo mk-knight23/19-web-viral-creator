@@ -889,7 +889,7 @@ export function MemeGenerator() {
                       }}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                         activeCategory === cat.id
-                          ? 'bg-brand-primary text-white'
+                          ? 'bg-brand-cta text-white'
                           : 'bg-surface-secondary text-text-muted hover:text-text-secondary hover:bg-border'
                       }`}
                     >
@@ -1016,7 +1016,7 @@ export function MemeGenerator() {
                               </p>
                             </div>
                           )}
-                          <div className="absolute inset-2 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-2">
+                          <div className="absolute inset-2 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-2">
                             <button
                               onClick={() => {
                                 selectMeme({
